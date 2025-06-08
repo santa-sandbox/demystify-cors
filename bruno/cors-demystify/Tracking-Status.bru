@@ -1,0 +1,15 @@
+meta {
+  name: Tracking-Status
+  type: http
+  seq: 1
+}
+
+get {
+  url: http://localhost:8080/api/delivery/status/SHM192992838JP
+  body: none
+  auth: inherit
+}
+
+headers {
+  Content-Type: application/json
+}

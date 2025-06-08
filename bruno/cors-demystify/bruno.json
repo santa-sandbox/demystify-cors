@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "cors-demystify",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
