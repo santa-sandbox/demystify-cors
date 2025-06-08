@@ -29,8 +29,11 @@ class DeliveryEndpointIntTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.trackingId").value(fakeTrackingId))
-                .andExpect(jsonPath("$.status").value("success"))
-                .andExpect(jsonPath("$.message").value("ok"));
+                .andExpect(jsonPath("$.id").value(fakeTrackingId))
+                .andExpect(jsonPath("$.status").value("processing"))
+                .andExpect(jsonPath("$.title").value("Parcel is being processed"))
+                .andExpect(jsonPath("$.location").value("Aichi"))
+                .andExpect(jsonPath("$.timestamp").value("2025-06-19 18:00:00"))
+                .andExpect(jsonPath("$.estimatedDelivery").value("2025-06-25 19:00:00"));
     }
 }

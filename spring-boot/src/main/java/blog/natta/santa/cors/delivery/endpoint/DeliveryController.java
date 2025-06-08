@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import blog.natta.santa.cors.TrackingResultResponse;
+import blog.natta.santa.cors.delivery.response.TrackingResultResponse;
 
 @RestController
 @RequestMapping(
@@ -16,6 +16,13 @@ import blog.natta.santa.cors.TrackingResultResponse;
 public class DeliveryController {
     @GetMapping(value = "/status/{trackingId}")
     public TrackingResultResponse trackDelivery(@PathVariable String trackingId) {
-        return new TrackingResultResponse(trackingId, "success", "ok");
+        return TrackingResultResponse.builder()
+                .id(trackingId)
+                .status("processing")
+                .title("Parcel is being processed")
+                .location("Aichi")
+                .timestamp("2025-06-19 18:00:00")
+                .estimatedDelivery("2025-06-25 19:00:00")
+                .build();
     }
 }

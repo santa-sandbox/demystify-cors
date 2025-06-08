@@ -29,7 +29,12 @@
 		deliveryStatus = null;
 
 		try {
-			const response = await fetch(`${API_BASE_URL}/${encodeURIComponent(trackingNumber.trim())}`);
+			const response = await fetch(`${API_BASE_URL}/${encodeURIComponent(trackingNumber.trim())}`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
 
 			if (response.ok) {
 				const data = await response.json();
@@ -164,7 +169,7 @@
 </svelte:head>
 
 <div
-	class="rid h-screen min-h-screen grid-rows-[auto_1fr_auto] overflow-y-auto bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50"
+	class="rid font-inter h-screen min-h-screen grid-rows-[auto_1fr_auto] overflow-y-auto bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50"
 >
 	<!-- Header -->
 	<header class="bg-gradient-to-r from-amber-900 via-orange-900 to-yellow-900 text-white shadow-xl">
