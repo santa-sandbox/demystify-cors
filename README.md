@@ -60,7 +60,7 @@ demystify-cors/
 ### Prerequisites
 
 - **Java 24** (for Spring Boot backend)
-- **Node.js 18+** (for SvelteKit frontend)
+- **Node.js 22+** (for SvelteKit frontend)
 - **pnpm** (package manager for frontend)
 - **Maven** (included via wrapper)
 
@@ -231,15 +231,6 @@ public class CorsConfig {
 - TailwindCSS 4.x
 - Vite
 
-## 🎨 UI Features
-
-- **Japanese-inspired Design**: シャムネコ (SHAMU Cat) themed interface
-- **Real-time Tracking**: Live package status updates
-- **Progress Timeline**: Visual delivery progress indicator
-- **Responsive Layout**: Works on desktop and mobile devices
-- **Loading States**: Smooth loading animations and feedback
-- **Error Handling**: User-friendly error messages
-
 ## 🐳 Native Compilation
 
 The Spring Boot application supports GraalVM native compilation:
@@ -263,14 +254,6 @@ This project helps you understand:
 3. **Frontend-Backend Communication**: Making API calls across different origins
 4. **Modern Web Architecture**: Full-stack development with modern tools
 5. **Error Handling**: Graceful handling of CORS-related errors
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
 
 ## 📄 License
 
