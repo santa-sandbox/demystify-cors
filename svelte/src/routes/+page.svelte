@@ -9,16 +9,11 @@
 		estimatedDelivery: string;
 	};
 	let trackingNumber = $state('');
-	let deliveryStatus: DeliveryStatus | null = $derived({
-		id: trackingNumber,
-		status: 'not-found',
-		title: 'Package Not Found',
-		description: 'No package found with this tracking number',
-		location: 'Unknown',
-		timestamp: 'N/A',
-		estimatedDelivery: 'N/A'
-	});
+	let deliveryStatus: DeliveryStatus | null = $state(null);
+	let hasSearched = $state(false);
 	let isLoading = $state(false);
+
+	let year = new Date().getFullYear();
 
 	const API_BASE_URL = 'http://localhost:8080/api/delivery/status';
 
@@ -27,6 +22,7 @@
 
 		isLoading = true;
 		deliveryStatus = null;
+		hasSearched = true;
 
 		try {
 			const response = await fetch(`${API_BASE_URL}/${encodeURIComponent(trackingNumber.trim())}`, {
@@ -176,7 +172,9 @@
 		<div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
 			<div class="flex items-center justify-between">
 				<div class="flex items-center space-x-4">
-					<div class="text-4xl">🐱</div>
+					<div class="text-4xl">
+						<img src="/assets/shamu-logo.png" alt="SHAMU Logo" class="h-12 w-12" />
+					</div>
 					<div>
 						<h1 class="text-2xl font-bold sm:text-3xl">シャムネコ Delivery</h1>
 						<p class="text-sm text-amber-200 sm:text-base">SHAMU Cat Express Service</p>
@@ -243,6 +241,35 @@
 			<p class="mb-2 text-sm text-amber-600">Enter your tracking number to check delivery status</p>
 			<p class="text-xs text-amber-500">API: GET localhost:8080/api/delivery/status/$trackingId</p>
 		</div>
+
+		<!-- Zero State -->
+		{#if !hasSearched && !deliveryStatus}
+			<div class="rounded-3xl border-2 border-amber-100 bg-white p-6 shadow-2xl sm:p-8">
+				<div class="text-center">
+					<div class="mb-6 text-6xl sm:text-7xl">📦</div>
+					<h3 class="mb-4 text-2xl font-bold text-amber-900 sm:text-3xl">
+						Ready to Track Your Package?
+					</h3>
+					<p class="mx-auto max-w-md text-lg text-amber-700">
+						Enter your tracking number above to see real-time delivery updates and progress
+					</p>
+					<div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-3">
+						<div class="rounded-xl bg-amber-50 p-4">
+							<div class="mb-2 text-2xl">🚚</div>
+							<p class="text-sm font-medium text-amber-900">Real-time Updates</p>
+						</div>
+						<div class="rounded-xl bg-amber-50 p-4">
+							<div class="mb-2 text-2xl">📍</div>
+							<p class="text-sm font-medium text-amber-900">Location Tracking</p>
+						</div>
+						<div class="rounded-xl bg-amber-50 p-4">
+							<div class="mb-2 text-2xl">⏰</div>
+							<p class="text-sm font-medium text-amber-900">Delivery Timeline</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		{/if}
 
 		<!-- Delivery Status -->
 		{#if deliveryStatus}
@@ -417,7 +444,9 @@
 			<div class="grid grid-cols-1 gap-8 md:grid-cols-3">
 				<div>
 					<div class="mb-4 flex items-center space-x-2">
-						<span class="text-2xl">🐱</span>
+						<span class="text-2xl">
+							<img src="/assets/shamu-logo.png" alt="Shamuneko Logo" class="h-8 w-8" />
+						</span>
 						<span class="text-lg font-bold">シャムネコ Delivery</span>
 					</div>
 					<p class="text-amber-200">
@@ -435,14 +464,14 @@
 				<div>
 					<h4 class="mb-4 font-semibold">Contact</h4>
 					<div class="space-y-2 text-amber-200">
-						<p>📞 1-800-Shamu</p>
+						<p>📞 1-800-486</p>
 						<p>📧 support@shamuneko-delivery.com</p>
 						<p>🌐 www.shamuneko-delivery.com</p>
 					</div>
 				</div>
 			</div>
 			<div class="mt-8 border-t border-amber-800 pt-8 text-center text-amber-200">
-				<p>&copy; 2025 シャムネコ Delivery. All rights reserved.</p>
+				<p>&copy; {year} シャムネコ Delivery. All rights reserved.</p>
 			</div>
 		</div>
 	</footer>
