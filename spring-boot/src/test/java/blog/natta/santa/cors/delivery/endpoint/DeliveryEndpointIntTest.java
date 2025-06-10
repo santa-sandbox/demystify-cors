@@ -17,11 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @WebMvcTest(DeliveryController.class)
 class DeliveryEndpointIntTest {
     @Autowired
-    private final MockMvc mockMvc;
-
-    DeliveryEndpointIntTest(MockMvc mockMvc) {
-        this.mockMvc = mockMvc;
-    }
+    private MockMvc mockMvc;
 
     @Test
     void Given_TrackingId_When_CallEndpoint_trackDelivery_Then_ReturnTrackingResult() throws Exception {
