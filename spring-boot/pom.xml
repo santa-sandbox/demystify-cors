@@ -6,12 +6,12 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.5.0</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/> <!-- lookup parent from a repository -->
 	</parent>
 	<groupId>blog.natta.santa</groupId>
-	<artifactId>cors</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>cors</name>
+	<artifactId>demystify-cors-spring</artifactId>
+	<version>0.0.1</version>
+	<name>demystify-cors-spring</name>
 	<description>CORS - Demystify CORS demo with Spring Boot &amp; Svelte</description>
 	<url/>
 	<licenses>
