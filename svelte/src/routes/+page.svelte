@@ -161,7 +161,7 @@
 
 <svelte:head>
 	<title>シャムネコ Delivery - Track Your Package</title>
-	<meta name="description" content="Track your delivery with SHAMU Cat Delivery Service" />
+	<meta name="description" content="Track your delivery with SHAMU NEKO Delivery Service" />
 </svelte:head>
 
 <div
@@ -173,11 +173,11 @@
 			<div class="flex items-center justify-between">
 				<div class="flex items-center space-x-4">
 					<div class="text-4xl">
-						<img src="/assets/shamu-logo.png" alt="SHAMU Logo" class="h-12 w-12" />
+						<img src="/assets/shamu-logo.png" alt="SHAMU-NEKO-Logo" class="h-12 w-12" />
 					</div>
 					<div>
 						<h1 class="text-2xl font-bold sm:text-3xl">シャムネコ Delivery</h1>
-						<p class="text-sm text-amber-200 sm:text-base">SHAMU Cat Express Service</p>
+						<p class="text-sm text-amber-200 sm:text-base">SHAMU NEKO Express Service</p>
 					</div>
 				</div>
 				<div class="hidden items-center space-x-6 text-sm sm:flex">
@@ -450,7 +450,7 @@
 						<span class="text-lg font-bold">シャムネコ Delivery</span>
 					</div>
 					<p class="text-amber-200">
-						Fast, reliable delivery service with the grace of a SHAMU cat.
+						Fast, reliable delivery service with the grace of a SHAMU NEKO.
 					</p>
 				</div>
 				<div>
