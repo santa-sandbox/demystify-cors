@@ -1,13 +1,5 @@
 package blog.natta.santa.cors.delivery.endpoint;
 
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
-
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -16,38 +8,44 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.web.servlet.MockMvc;
+
 import java.nio.charset.StandardCharsets;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(DeliveryController.class)
-class DeliveryEndpointIntTest {
+@WebMvcTest(ReceiptController.class)
+class ReceiptEndpointIntTest {
     @Autowired
     private MockMvc mockMvc;
 
     @Test
-    void Given_TrackingId_When_CallEndpoint_trackDelivery_Then_ReturnTrackingResult() throws Exception {
+    void Given_TrackingId_When_CallEndpoint_queryReceipt_Then_ReturnReceiptResult() throws Exception {
         // Arrange
         var fakeTrackingId = "123456789";
 
         // Act & Assert
-        mockMvc.perform(get("/api/v1/delivery/status/{trackingId}", fakeTrackingId)
-                .contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get("/api/v2/receipt/{trackingId}", fakeTrackingId)
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(header().string("Content-Type", MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.id").value(fakeTrackingId))
-                .andExpect(jsonPath("$.status").value("processing"))
-                .andExpect(jsonPath("$.title").value("Parcel is being processed"))
-                .andExpect(jsonPath("$.location").value("Aichi"))
-                .andExpect(jsonPath("$.timestamp").value("2025-06-19 18:00:00"))
-                .andExpect(jsonPath("$.estimatedDelivery").value("2025-06-25 19:00:00"));
+                .andExpect(jsonPath("$.deliveryFee").value(2450))
+                .andExpect(jsonPath("$.tax").value(120))
+                .andExpect(jsonPath("$.total").value(2560));
     }
 
     @Test
     void Given_BadOrigin_When_CalEndpoint_api_Then_GlobalCorsCauseException() throws Exception {
         var fakeTrackingId = "123456789";
-        var response = mockMvc.perform(options("/api/v1/delivery/status/{trackingId}", fakeTrackingId)
-                .header("Access-Control-Request-Method", "GET")
-                .header("Origin", "http://www.iambadorigin.com"))
+        var response = mockMvc.perform(options("/api/v2/receipt/{trackingId}", fakeTrackingId)
+                        .header("Access-Control-Request-Method", "GET")
+                        .header("Origin", "http://www.iambadorigin.com"))
                 .andExpect(status().isForbidden())
                 .andReturn();
 

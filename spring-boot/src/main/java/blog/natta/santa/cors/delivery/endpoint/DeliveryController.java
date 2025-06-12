@@ -10,7 +10,7 @@ import blog.natta.santa.cors.delivery.response.TrackingResultResponse;
 
 @RestController
 @RequestMapping(
-        value = "/api/delivery",
+        value = "/api/v1/delivery",
         produces = MediaType.APPLICATION_JSON_VALUE,
         consumes = MediaType.APPLICATION_JSON_VALUE)
 public class DeliveryController {
