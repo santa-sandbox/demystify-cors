@@ -8,20 +8,32 @@
 		timestamp: string;
 		estimatedDelivery: string;
 	};
+
+	type DeliveryReceipt = {
+		id: string;
+		deliveryFee: number;
+		tax: number;
+		total: number;
+	};
+
 	let trackingNumber = $state('');
 	let deliveryStatus: DeliveryStatus | null = $state(null);
+	let deliveryReceipt: DeliveryReceipt | null = $state(null);
 	let hasSearched = $state(false);
 	let isLoading = $state(false);
+	let isLoadingReceipt = $state(false);
 
 	let year = new Date().getFullYear();
 
-	const API_BASE_URL = 'http://localhost:8080/api/delivery/status';
+	const API_BASE_URL = 'http://localhost:8080/api/v1/delivery/status';
+	const API_RECEIPT_URL = 'http://localhost:8080/api/v2/receipt';
 
 	async function trackPackage() {
 		if (!trackingNumber.trim()) return;
 
 		isLoading = true;
 		deliveryStatus = null;
+		deliveryReceipt = null;
 		hasSearched = true;
 
 		try {
@@ -69,6 +81,41 @@
 			};
 		} finally {
 			isLoading = false;
+		}
+
+		// Fetch receipt if we have a successful delivery status
+		if (deliveryStatus && deliveryStatus.status !== 'not-found' && deliveryStatus.status !== 'error') {
+			await fetchReceipt(trackingNumber.trim());
+		}
+	}
+
+	async function fetchReceipt(trackingId: string) {
+		isLoadingReceipt = true;
+		try {
+			const response = await fetch(`${API_RECEIPT_URL}/${encodeURIComponent(trackingId)}`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+
+			if (response.ok) {
+				const data = await response.json();
+				deliveryReceipt = {
+					id: data.id || trackingId,
+					deliveryFee: data.deliveryFee || 0,
+					tax: data.tax || 0,
+					total: data.total || 0
+				};
+			} else {
+				console.log('Receipt not available for this tracking ID');
+				deliveryReceipt = null;
+			}
+		} catch (error) {
+			console.error('Error fetching receipt:', error);
+			deliveryReceipt = null;
+		} finally {
+			isLoadingReceipt = false;
 		}
 	}
 
@@ -436,6 +483,61 @@
 				{/if}
 			</div>
 		{/if}
+
+		<!-- Delivery Receipt -->
+		{#if deliveryStatus && (deliveryStatus.status !== 'not-found' && deliveryStatus.status !== 'error')}
+			<div class="mt-8 rounded-3xl border-2 border-amber-100 bg-white p-6 shadow-2xl sm:p-8">
+				<div class="mb-6 flex items-center justify-between">
+					<h3 class="text-2xl font-bold text-amber-900 sm:text-3xl">Delivery Receipt</h3>
+					<div class="text-3xl">🧾</div>
+				</div>
+
+				{#if isLoadingReceipt}
+					<div class="flex items-center justify-center py-8">
+						<div class="flex items-center space-x-3">
+							<div class="h-6 w-6 animate-spin rounded-full border-2 border-amber-600 border-t-transparent"></div>
+							<span class="text-amber-700">Loading receipt...</span>
+						</div>
+					</div>
+				{:else if deliveryReceipt}
+					<div class="rounded-2xl bg-gradient-to-br from-amber-50 to-orange-50 p-6">
+						<div class="mb-4 border-b border-amber-200 pb-4">
+							<h4 class="font-semibold text-amber-900">Receipt Details</h4>
+							<p class="text-sm text-amber-600">Tracking ID: <span class="font-mono font-bold">{deliveryReceipt.id}</span></p>
+						</div>
+
+						<div class="space-y-3">
+							<div class="flex justify-between items-center py-2">
+								<span class="text-amber-900">Delivery Fee</span>
+								<span class="font-mono text-amber-900">¥{deliveryReceipt.deliveryFee.toFixed(2)}</span>
+							</div>
+							<div class="flex justify-between items-center py-2">
+								<span class="text-amber-900">Tax</span>
+								<span class="font-mono text-amber-900">¥{deliveryReceipt.tax.toFixed(2)}</span>
+							</div>
+							<div class="border-t border-amber-300 pt-3">
+								<div class="flex justify-between items-center py-2">
+									<span class="font-semibold text-amber-900 text-lg">Total</span>
+									<span class="font-mono font-bold text-amber-900 text-lg">¥{deliveryReceipt.total.toFixed(2)}</span>
+								</div>
+							</div>
+						</div>
+
+						<div class="mt-6 pt-4 border-t border-amber-200">
+							<p class="text-center text-xs text-amber-600">
+								Thank you for choosing シャムネコ Delivery Service
+							</p>
+						</div>
+					</div>
+				{:else}
+					<div class="rounded-2xl bg-amber-50 p-6 text-center">
+						<div class="mb-2 text-4xl">📄</div>
+						<p class="text-amber-700">Receipt not available for this tracking ID</p>
+						<p class="text-sm text-amber-600 mt-1">Receipt may be generated after delivery completion</p>
+					</div>
+				{/if}
+			</div>
+		{/if}
 	</main>
 
 	<!-- Footer -->
@@ -471,7 +573,7 @@
 				</div>
 			</div>
 			<div class="mt-8 border-t border-amber-800 pt-8 text-center text-amber-200">
-				<p>&copy; {year} シャムネコ Delivery. All rights reserved.</p>
+				<p>&copy; 2024 - {year} シャムネコ Delivery. All rights reserved.</p>
 			</div>
 		</div>
 	</footer>
