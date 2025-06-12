@@ -212,7 +212,7 @@
 </svelte:head>
 
 <div
-	class="rid font-inter h-screen min-h-screen grid-rows-[auto_1fr_auto] overflow-y-auto bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50"
+	class="font-inter min-h-screen grid grid-rows-[auto_1fr_auto] bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50"
 >
 	<!-- Header -->
 	<header class="bg-gradient-to-r from-amber-900 via-orange-900 to-yellow-900 text-white shadow-xl">
@@ -236,7 +236,8 @@
 	</header>
 
 	<!-- Main Content -->
-	<main class="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+	<main class="overflow-y-auto">
+		<div class="mx-auto max-w-4xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
 		<!-- Hero Section -->
 		<div class="mb-12 text-center">
 			<h2 class="mb-4 text-3xl font-bold text-amber-900 sm:text-4xl lg:text-5xl">
@@ -538,10 +539,11 @@
 				{/if}
 			</div>
 		{/if}
+		</div>
 	</main>
 
 	<!-- Footer -->
-	<footer class="mt-16 bg-gradient-to-r from-amber-900 via-orange-900 to-yellow-900 text-white">
+	<footer class="bg-gradient-to-r from-amber-900 via-orange-900 to-yellow-900 text-white">
 		<div class="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
 			<div class="grid grid-cols-1 gap-8 md:grid-cols-3">
 				<div>
